@@ -1,0 +1,74 @@
+package org.audioshop.service;
+
+import java.util.List;
+
+import org.audioshop.domain.AudioDramaVO;
+import org.audioshop.domain.Criteria;
+import org.audioshop.mapper.AudioMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@Service 
+@AllArgsConstructor  
+@Log4j
+public class AudioServiceImpl implements AudioService {
+ 
+
+	@Autowired
+	private AudioMapper mapper;
+	
+	/*
+	@Autowired 
+	private AudioAttachMapper attachMapper;
+	 */
+	 
+	@Transactional
+	@Override
+	public void register(AudioDramaVO audio) {  
+		log.info("신규 상품 등록:" + audio);
+		mapper.insertSelectKey(audio);  
+	}
+
+	@Override
+	public AudioDramaVO get(Long auId) {  
+		return mapper.read(auId);
+	}
+
+	@Transactional
+	@Override
+	public boolean modify(AudioDramaVO audio) { 
+		//attachMapper.deleteAll(audio.getEvId()); 
+		boolean modifyResult = mapper.update(audio) == 1; 
+		//if(modifyResult && audio.getAttachList() != null && audio.getAttachList().size() > 0) { 
+		//	audio.getAttachList().forEach(attach -> { 
+		//		attach.setEvId(audio.getEvId());
+		//		attachMapper.insert(attach);
+		//	});
+		//} 
+		return modifyResult;
+	}
+ 
+	@Transactional
+	@Override
+	public boolean remove(Long auId) { 
+		//attachMapper.deleteAll(auId); 
+		return mapper.delete(auId) == 1;
+	}
+
+	@Override
+	public List<AudioDramaVO> getList(Criteria cri) {  
+		return mapper.getListWithPaging(cri);
+	}
+ 
+	@Override
+	public int getTotal(Criteria cri) { 
+		return mapper.getTotalCount(cri);
+	} 
+ 
+	
+	
+}
