@@ -5,7 +5,6 @@ import org.audioshop.domain.MemberVO;
 import org.audioshop.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private MemberMapper memberMapper;
-
+ 
 	@Override 
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { 
 		log.warn(username); 

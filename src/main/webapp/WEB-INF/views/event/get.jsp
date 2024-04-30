@@ -29,8 +29,7 @@
 		width: 100px;
 	}
 	
-	.uploadResult ul li span {
-		color: white;		
+	.uploadResult ul li span { 
 	}
 	
 	.bigPictureWrapper {
@@ -132,7 +131,6 @@
 	
 	
 	
-
 <script>
 	$(document).ready(function(){ 
 		(function(){

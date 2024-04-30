@@ -26,7 +26,7 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">회원정보 수정</h3></div>
                                     <div class="card-body">
-                                        <form role="form" action="/member/modify" method="post">
+                                        <form role="form" action="/member/modify" method="post" id="formObj">
                                         
                                             <div class="row mb-3"> 
                                                 <div class="col-md-6">
@@ -48,37 +48,37 @@
                                                 <input class="form-control" name="email" id="email" type="email" placeholder="name@example.com"
                                                         	value="<sec:authentication property="principal.member.email"/>" />
                                                 <label for="inputEmail">이메일</label>
-                                            </div><%-- 
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" name="phone" id="phone" type="text" placeholder="010-0000-0000"
-                                                        	value="<sec:authentication property="principal.member.phone"/>" />
-                                                <label for="inputPhone">연락처</label>
-                                            </div> --%>
-                                            <div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" name="password" id="password" type="text" placeholder="비밀번호"
-                                                        	value="<sec:authentication property="principal.password"/>" />
-                                                        <label for="inputpassword">비밀번호</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" name="password2" id="password2" type="password" placeholder="비밀번호 확인"
-                                                        	value="<sec:authentication property="principal.password"/>" />
-                                                        <label for="inputpasswordConfirm">비밀번호 확인</label>
-                                                    </div>
-                                                </div>
-                                            </div> <%-- 
+                                            </div> 
+                                            
                                             <div class="row mb-3"> 
+                                                <div class="col-md-6"> <!-- 
+                                                    <div class="form-floating mb-3 mb-md-0">
+                                                        <input class="form-control" name="password0" id="password0"
+                                                         type="password" placeholder="기존 비밀번호" />
+                                                        <label for="inputpasswordConfirm">기존 비밀번호</label>
+                                                    </div> -->
+                                                </div> 
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" name="age" id="age" type="text" placeholder="나이"
-                                                        	value="<sec:authentication property="principal.member.age"/>" />  
-                                                        <label for="age">나이</label>
+                                                        <input class="form-control" name="password" id="password" 
+                                                         type="password" placeholder="새 비밀번호" />
+                                                        <label for="inputpasswordConfirm">새 비밀번호</label>
                                                     </div>
-                                                </div> 
-                                                <div class="col-md-6">  
+                                                </div>
+                                            </div> 
+                                            <div class="row mb-3"> <%-- 
+                                                <div class="col-md-6">
+                                                <div class="input-group mb-3">
+												  <label class="input-group-text" for="age">나이</label>
+												  <select class="form-select" id="age" name="age">
+												    <option selected>=...</option>
+												    <option value="1">One</option>
+												    <option value="2">Two</option>
+												    <option value="3">Three</option>
+												  </select>
+												</div> 
+                                                 </div>  --%>
+                                                <div class="col-md-6">  <%-- 
 														<input name="flexRadioDefault gender" id="flexRadioDefault1 gender" type="radio" value="11"
 															<c:if test="${principal.member.gender == 11}"> <c:out value="checked" /> </c:if> 
 														>
@@ -86,15 +86,23 @@
 														<input name="flexRadioDefault gender" id="flexRadioDefault1 gender" type="radio" value="12"
 															<c:if test="${principal.member.gender == 12}"> <c:out value="checked" /> </c:if> 
 														>
-														<label>여</label>  
+														<label>여</label>   --%>
                                                  </div>  
-                                            </div>  --%>
+                                            </div> 
   
                                             
-                                            <div class="mt-4 mb-0"><div class="d-grid"> 
-                                                <button type="submit" class="btn btn-primary btn-block">정보수정</button>
-												<button type="reset" class="btn btn-outline-danger">취소</button>
+                                            <div class="mt-4 mb-0"><div class="d-grid">
+                                            <div class="btn-group" role="group" aria-label="Basic mixed styles example"> 
+                                            	<button type="button" class="btn btn-primary btn-block" 
+                                            	onclick="checkValue();">정보2</button> 
+                                                
+                                                <button type="button" class="btn btn-success btn-block"
+                                                href='<sec:authentication property="principal.username"/>' 
+                                                class="move2">정보수정</button> 
+												
+												<button data-oper='reset' type="reset" class="btn btn-warning">취소</button> 
 												<button data-oper='remove' class="btn btn-danger">회원탈퇴</button>  
+                                            </div>
 											</div></div> 
                                             
                             			<input type="hidden" name="mmId" value="<sec:authentication property="principal.member.mmId"/>" >
@@ -118,69 +126,18 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="/resources/admin/js/scripts.js"></script> 
 <%@ include file="../includes/footer.jsp" %>
-
-
+ 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script>/* 
-	$(document).ready(function(){ 
-		checkValue = function(){   
-			var hpReg = /^\d{3}-\d{3,4}-\d{4}$/; 
-			var emailReg = /^[A-Za-z0-9!#$%^&*_-]+@[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+){1,2}$/;
-			var hp1 = '010123456';
-			var hp2 = '01012345678';
-			var email1 = 'abc&1_23&A-BC@icox';
-			var email2 = 'abc&1_23&A-BC@icox.com';
-			var email3 = 'abc&1_23&A-BC@icox.co.kr';
-			var email4 = 'abc&1_23&A-BC@icox.abs.co.kr';  
-            var phone = $("#phone").val(); 
-            var email = $("#email").val(); 
-            
-            
-            if(!$("#username").val()){
-				alert("아이디는 필수 입력 사항입니다.");
-				return false;
-			}
-			
-			if(!$("#password").val()){
-				alert("비밀번호는 필수 입력 사항입니다.");
-				return false;
-			}
-			
-			if(!$("#password2").equals($("#password2"))){
-				alert("비밀번호가 일치하지 않습니다.");
-				return false;
-			}
-			
-			if(!$("#name").val()){
-				alert("이름은 필수 입력 사항입니다.");
-				return false;
-			}
-		    if(!emailReg.test(email)){
-		        alert('이메일을 형식이 옳지 않습니다.');
-		        return false;
-		    }
-			
-			if(!$("#phone").val()){
-				alert("연락처를 입력해주세요.");
-				return false;
-			} 
-            if (!hpReg.test(phone)){
-                alert('연락처를 다시 확인해주세요.');
-                return false;
-            } 
-			if(!$("input:radio[name='gender']").is(":checked")){
-				alert("성별을 선택해주세요.");
-				return false;			
-			}
-			
-			form.submit();
-		}		
-		
-	}); */
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script type="text/javascript">  
+$(".move2").on("click",function(e){ 
+	var actionForm = $("#actionForm2");
+	e.preventDefault(); 
+	actionForm.append("<input type='hidden' name='username' value='"+ $(this).attr("href") + "'>");
+	actionForm.attr("action","/member/modify");
+	actionForm.submit();
+});
 </script>  
-
-
-
 <script>
 /* 생일을 달력에서 찍기 */
 $(document).ready(function(){
@@ -204,6 +161,73 @@ $(document).ready(function(){
 			showMonthAfterYear:true,
 			yearSuffix:'년'
 		});
+		
+		
+		
+/* 유효성 검사 */
+
+		var formObj = $("form[role='form']"); 
+		
+		$('button').on("click", function(e){ 
+			e.preventDefault(); 
+			var operation = $(this).data("oper"); 
+			console.log(operation); 
+			
+			if(operation === 'remove'){		//삭제 버튼 클릭 처리 
+				formObj.attr("action", "/member/remove"); 
+			}
+			
+			else if (operation === 'modify'){ 
+				console.log("수정 버튼클릭 "); 
+				var str="";   
+				formObj.append(str).submit(); 
+			}  
+			
+			if (operation === 'reset'){
+				$("#formObj")[0].reset();
+                return false;
+			}
+			
+			formObj.submit();  
+			
+			 
+		});
+
+		var csrfParameterName = "${_csrf.parameterName}";
+		var csrfTokenValue = "${_csrf.token}";
+		var password0 = '<sec:authentication property="principal.member.password"/>';
+
+ 
+		 
+		checkValue = function(){ 
+            var username = $("#username").val(); 
+            var ps0 = $("#password").val();
+            var ps1 = $("#password").val();
+            
+            if(!username){
+				alert("아이디는 필수 입력 사항입니다.");
+				return false;
+			}
+            
+			if(!ps0){
+				alert("비밀번호는 필수 입력 사항입니다.");
+				return false;
+			}
+			
+			if(!ps1){
+				alert("비밀번호는 필수 입력 사항입니다.");
+				return false;
+			}/* 
+            
+			if(ps0 != password0){
+				alert("비밀번호가 다릅니다.");
+				return false;
+			} */
+			 
+		}	 		
+		
+		
+		
 	});
 </script>
 <!-- 카카오 우편번호 API -->
@@ -257,64 +281,6 @@ $(document).ready(function(){
         }).open();
     }
 </script> 
-
-
-
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<script type="text/javascript">
-$(document).ready(function() { 
-	var formObj = $("form[role='form']");   
-	$('button').on("click", function(e){ 
-		e.preventDefault(); 
-		var operation = $(this).data("oper"); 
-		console.log(operation); 
-		
-		if(operation === 'remove'){		//삭제 버튼 클릭 처리 
-			formObj.attr("action", "/member/remove");
-		}
-		else if (operation === 'modify'){ 
-			console.log("수정 버튼클릭 "); 
-			var str="";   
-			formObj.append(str).submit(); 
-		} 
-		formObj.submit();  
-	});
-
-	var csrfParameterName = "${_csrf.parameterName}";
-	var csrfTokenValue = "${_csrf.token}";
-
-
-	
-	/* 
-	 function(){
-	    alert('user의 save함수 호출됨');
-	    let data = {
-	            age: $("#age").val(),
-	            username: $("#username").val(),
-	            password: $("#password").val(),
-	            name: $("#name").val(),
-	            email: $("#email").val()
-	    };
-
-	    $.ajax({ 
-	        type: "PUT",
-	        url: "/modify",
-	        data: JSON.stringify(data), // http body데이터
-	        contentType: "application/json; charset=utf-8",// body데이터가 어떤 타입인지(MIME)
-	        dataType: "json" // 요청을 서버로해서 응답이 왔을 때 기본적으로 모든 것이 문자열 (생긴게 json이라면) => javascript오브젝트로 변경
-	    }).done(function(resp){
-	        alert("회원수정이 완료되었습니다.");
-	        //console.log(resp);
-	        location.href = "/";
-	    }).fail(function(error){
-	        alert(JSON.stringify(error));
-	    }); 
-
-	} 
- */
-});  
-</script>
 
 
 

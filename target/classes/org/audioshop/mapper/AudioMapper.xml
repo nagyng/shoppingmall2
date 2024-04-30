@@ -3,12 +3,21 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.audioshop.mapper.AudioMapper"> 
-<select id="getList" resultType="org.audioshop.domain.AudioDramaVO"> 
+ 
+<resultMap id="codesMap" type="org.audioshop.domain.CodesVO">
+	<result property="code" column="code"/> 
+	<result property="codename" column="codename"/> 
+</resultMap>
+
+
+<select id="getList" resultMap="codesMap"> 
 <![CDATA[
 select 			* 
-from 			audiodrama
-where 			auId > 0 
-order by 		auId desc
+from 			audiodrama a
+inner join		codes c
+where 			a.auId > 0
+and				a.auStatus = c.code 
+order by 		a.auId desc
 ]]>
 </select>
   

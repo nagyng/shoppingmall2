@@ -9,7 +9,7 @@
 <style>
 	.uploadResult {
 		width: 100%;
-		background-color:gold;
+		background-color: whitesmoke;
 	}
 	
 	.uploadResult ul {
@@ -32,8 +32,7 @@
 	
 	
 	/* p543 */	
-	.uploadResult ul li span {
-		color: white;		
+	.uploadResult ul li span { 
 	}
 	
 	.bigPictureWrapper {

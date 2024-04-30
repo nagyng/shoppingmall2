@@ -24,7 +24,7 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">회원가입</h3></div>
                                     <div class="card-body">
-                                        <form role="form" action="/member/register" method="post">
+                                        <form role="form" action="/member/register" method="post" name="frm">
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
@@ -59,7 +59,7 @@
                                             </div>
                                             <div class="mt-4 mb-0">
                                                 <div class="d-grid">
-                                                	<button type="submit" class="btn btn-primary btn-block">가입하기</button>
+                                                	<button type="button" class="btn btn-primary btn-block" onclick="checkValue();">가입하기</button>
 													<button type="reset" class="btn btn-outline-danger"> 취소 </button>
 												</div>
                                             </div>
@@ -81,9 +81,7 @@
         <script src="/resources/admin/js/scripts.js"></script>
     </body>
 
- 
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  
 <script type="text/javascript">
 $(document).ready(function() {   
 
@@ -97,32 +95,30 @@ $(document).ready(function() {
 	var csrfParameterName = "${_csrf.parameterName}";
 	var csrfTokenValue = "${_csrf.token}";
 	
-	
-});
 
 
-</script>
-<script>
-	$(document).ready(function(){ 
 		checkValue = function(){ 
-            var ph = $("#phone").val(); 
-            if(!$("#username").val()){
+            var username = $("#username").val(); 
+            var ps1 = $("#password").val();
+            var ps2 = $("#password2").val();
+            
+            if(!username){
 				alert("아이디는 필수 입력 사항입니다.");
 				return false;
 			}
 			
-			if(!$("#password").val()){
+			if(!ps1){
 				alert("비밀번호는 필수 입력 사항입니다.");
 				return false;
 			}
 			
-			if(!$("#password2").equals($("#password2"))){
+			if(ps1 != ps2){
 				alert("비밀번호가 일치하지 않습니다.");
 				return false;
 			}
 			 
 			
-			form.submit();
+			frm.submit();
 		}		
 		
 	});

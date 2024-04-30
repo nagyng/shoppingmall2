@@ -13,7 +13,11 @@ public class EventVO {
 	private Long evId;  
 	private String evTitle; 
 	private String evContent; 
+	
 	private String username;
+    private String mmId; 
+    private String name;
+    
 	private int evViews; 
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")

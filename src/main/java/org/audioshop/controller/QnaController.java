@@ -66,8 +66,7 @@ public class QnaController {
 		 
 		model.addAttribute("qna",service.get(qnId));
 	}
-
-	@PreAuthorize("principal.username == #qna.username")
+ 
 	@PostMapping("/modify")
 	public String modify(QnaVO qna, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 	
@@ -75,7 +74,7 @@ public class QnaController {
 			rttr.addFlashAttribute("result","success");
 		}
 		 
-		return "redirect:/qna/list" + cri.getListLink();
+		return "redirect:/qna/list" + cri.getListLink(); 
 	}
  
 	@PostMapping("/remove")

@@ -9,7 +9,7 @@
 <style>
 	.uploadResult {
 		width: 100%;
-		background-color:gold;
+		background-color:whitesmoke;
 	}
 	
 	.uploadResult ul {
@@ -109,14 +109,9 @@
 					</div> 
 					
 					
-					
-					<sec:authentication property="principal" var="pinfo"/> 
-					<sec:authorize access="isAuthenticated()">
-						<c:if test="${pinfo.username eq qna.username }">
-							<button data-oper='modify' type="submit" class="btn btn-primary">수정</button>
-							<button data-oper='remove' type="submit" class="btn btn-danger">삭제</button>
-						</c:if>
-					</sec:authorize> 
+					 
+					<button data-oper='modify' type="submit" class="btn btn-primary">수정</button>
+					<button data-oper='remove' type="submit" class="btn btn-danger">삭제</button> 
 					<button data-oper='list' type="submit" class="btn btn-info">목록</button>
 					 
 					<input type="hidden" id="pageNum" name="pageNum" value='<c:out value="${cri.pageNum }"/>'>
@@ -141,15 +136,14 @@
 
 
 
-<!-- p584	3/29 -->
+<!-- 
 <div class="row">
 	<div class="col-lg-12">
-		<div class="panel panel-warning">
+		<div class="panel panel-default">
 		
 			<div class="panel-heading">첨부파일</div>
 			<div class="panel-body">
-			
-			<!--  p586 -->
+			 
 				<div class="form-group uploadDiv">
 					<input type="file" name="uploadFile" multiple>
 				</div>
@@ -165,7 +159,7 @@
 		</div>
 	</div>
 </div> 
-
+ -->
 
  
 <script type="text/javascript">
@@ -259,7 +253,7 @@ $(document).ready(function() {
 						
 						str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"'><div>";
 						str += "<span> " + attach.fileName + "</span><br/>";
-						str += "<button type='button' data-file=\'" + fileCallPath + "\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+						str += "<button type='button' data-file=\'" + fileCallPath + "\' data-type='image' class='btn btn-default btn-circle'><i class='fa fa-times'></i></button><br>";
 						str += "<img src='/display?fileName="+fileCallPath+"'>";
 						str += "</div>";
 						str += "</li>";
@@ -267,7 +261,7 @@ $(document).ready(function() {
 						
 						str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"'><div>";
 						str += "<span> " + attach.fileName + "</span><br/>";
-						str += "<button type='button' data-file=\'" + fileCallPath + "\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+						str += "<button type='button' data-file=\'" + fileCallPath + "\' data-type='image' class='btn btn-default btn-circle'><i class='fa fa-times'></i></button><br>";
 						str += "<img src='/resources/img/attach.qng'>";
 						str += "</div>";
 						str += "</li>";
@@ -397,7 +391,7 @@ $(document).ready(function() {
 								//일반파일인 경우 a태그를 클릭시 다운로드 처리
 								str += "<li data-path='"+obj.uploadPath+"' data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.image+"'><div>"; 
 								str += "<span>" + obj.fileName + "</span>";
-								str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+								str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class='btn btn-default btn-circle'><i class='fa fa-times'></i></button><br>";
 								str += "<img src='/resources/img/attach.png'>";
 								str += "</div></li>"; 
 							} else { //업로드한 파일이 이미지인 경우
@@ -422,7 +416,7 @@ $(document).ready(function() {
 								//a 태그를 클릭하면 원본 이미지를 출력
 								str += "<li data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "' data-type='" + obj.image + "'><div>";
 								str += "<span>" + obj.fileName + "</span>";
-								str += "<button type='button' data-file=\'" + fileCallPath + "\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+								str += "<button type='button' data-file=\'" + fileCallPath + "\' data-type='image' class='btn btn-default btn-circle'><i class='fa fa-times'></i></button><br>";
 								str += "<img src='/display?fileName=" + fileCallPath + "'>";
 								str += "</div>";
 								str += "</li>"; 

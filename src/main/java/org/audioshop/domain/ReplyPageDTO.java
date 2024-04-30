@@ -13,6 +13,4 @@ public class ReplyPageDTO {
 	private List<ReplyVO> list; 
 
 
-}
-//p433  	3/26 
-
+} 

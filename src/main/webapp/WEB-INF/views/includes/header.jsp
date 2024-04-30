@@ -51,8 +51,13 @@ text-decoration-line: none;
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							</form>  --%>
                         </li> 
-                        <li class="nav-item"> 
+                        <li class="nav-item"> <!-- 
                         	<a class="nav-link" href='/member/modify'>정보수정</a>
+                        	 -->
+	                        <form action="/member/modify" method="get" id="actionFormactionForm"> 
+	                        	<a class="nav-link movemove" 
+	                        		href='<sec:authentication property="principal.member.username"/>'>정보 수정</a>  
+	                        </form>
                         </li>
                         </sec:authorize> 
                         
@@ -65,15 +70,14 @@ text-decoration-line: none;
         </nav>
 
 
-
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
+ <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> <!-- 
+<script src="http://code.jquery.com/jquery-latest.js"></script> -->
 <script type="text/javascript">
 
 
-$(".move").on("click",function(e){ 
-	var actionForm = $("#actionForm");
+$(".movemove").on("click",function(e){ 
+	var actionForm = $("#actionFormactionForm");
 	e.preventDefault(); 
 	actionForm.append("<input type='hidden' name='username' value='"+ $(this).attr("href") + "'>");
 	actionForm.attr("action","/member/modify");

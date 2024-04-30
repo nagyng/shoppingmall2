@@ -32,7 +32,7 @@
                                     <tr>
                                         <th>번호</th>
                                         <th>제목</th>
-                                        <th>내용</th>
+                                        <th>아이디</th>
                                         <th>작성일</th>
                                         <th>수정일</th>
                                     </tr>
@@ -44,6 +44,7 @@
                                 	<td> 
                                 		<a class="move" href='<c:out value="${qna.qnId }"/>'>
                                 			<c:out value="${qna.qnTitle }"/> 
+                                			<b style="color: gold;">[ <c:out value=" ${qna.replyCnt}"></c:out> ]</b>
                                 		</a>
                                 	</td>
                                 	<td><c:out value="${qna.username }"/></td>
