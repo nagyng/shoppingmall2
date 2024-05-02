@@ -97,7 +97,7 @@ public class ReplyController {
 	}	
 	
 	//p397 특정 댓글 삭제 처리
-	@PreAuthorize("principal.username == #vo.username") 
+	//@PreAuthorize("principal.username == #vo.username") 
 	@DeleteMapping(value="/{reId}")
 	public ResponseEntity<String> remove(
 			@RequestBody ReplyVO vo,

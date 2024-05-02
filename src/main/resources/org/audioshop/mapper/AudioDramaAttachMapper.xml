@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.audioshop.mapper.AudioDramaAttachMapper">
+
+ 
+<insert id="insert">
+insert into		audiodrama_attach (uuid, uploadpath, filename, filetype, auId)
+values			(#{uuid}, #{uploadPath}, #{fileName}, #{fileType}, #{auId} )
+</insert>
+
+<delete id="delete">
+delete from		audiodrama_attach
+where			uuid = #{uuid}
+</delete>
+
+<select id="findByAuId" resultType="org.audioshop.domain.AudioDramaAttachVO">
+select			*
+from			audiodrama_attach
+where			auId = #{auId}
+</select>
+ 
+<delete id="deleteAll">
+delete 			audiodrama_attach 
+where 			auId = #{auId}
+</delete>
+
+ 
+<select id="getOldFiles" resultType="org.audioshop.domain.AudioDramaAttachVO">
+select 			*
+from			audiodrama_attach
+where			uploadpath = to_char(sysdate -1, 'yyyy\mm\dd')
+</select>
+  
+
+
+</mapper>

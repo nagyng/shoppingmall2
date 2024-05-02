@@ -8,13 +8,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-        <meta charset="utf-8" />
+        <meta charset="utf-8" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>오로라</title> 
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> 
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" /> 
+        
+        
+        
+        <!-- AUDIO > INSERT -->
+        <!-- Bootstrap core JS--> <!-- 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> -->
+        <!-- Core theme JS-->
+        <script src="/resources/shopDetail/js/scripts.js"></script>
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/resources/shopDetail/css/styles.css" rel="stylesheet" /> 
+        
+        
 <style type="text/css">
 a {
 text-decoration: none;
@@ -24,9 +38,7 @@ text-decoration-line: none;
 }
 </style>
 </head>
-<body>
-<!-- 
-<sec:authentication property="principal" var="pinfo"/>  -->
+<body> 
 
         <!-- Basic Header -->
         <nav class="bg-light bg-gradient">
@@ -35,6 +47,7 @@ text-decoration-line: none;
                     <ul class="nav justify-content-end">
                         <li class="nav-item"><a class="nav-link" href="/event/list">이벤트 공지사항</a></li>
                         <li class="nav-item"><a class="nav-link" href="/qna/list">문의게시판</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/review/list">후기게시판</a></li>
                          
                         <sec:authorize access="isAnonymous()">
                         <li class="nav-item"><a class="nav-link" href="/member/login">로그인</a></li>
@@ -43,17 +56,9 @@ text-decoration-line: none;
                          
 						<sec:authorize access="isAuthenticated()">
                         <li class="nav-item">  
-                        	<a class="nav-link" href="/member/logout">로그아웃</a>  <%-- 
-							<form role="form" id="Logoutform" method='post' action="/member/logout">
-								<fieldset>  
-									<a href="/member/login" class="btn-logout">로그아웃</a>
-								</fieldset>
-								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							</form>  --%>
+                        	<a class="nav-link" href="/member/logout">로그아웃</a> 
                         </li> 
-                        <li class="nav-item"> <!-- 
-                        	<a class="nav-link" href='/member/modify'>정보수정</a>
-                        	 -->
+                        <li class="nav-item"> 
 	                        <form action="/member/modify" method="get" id="actionFormactionForm"> 
 	                        	<a class="nav-link movemove" 
 	                        		href='<sec:authentication property="principal.member.username"/>'>정보 수정</a>  
@@ -70,9 +75,6 @@ text-decoration-line: none;
         </nav>
 
 
- <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> <!-- 
-<script src="http://code.jquery.com/jquery-latest.js"></script> -->
 <script type="text/javascript">
 
 
@@ -88,6 +90,12 @@ $(".btn-logout").on("click", function(e){
 	e.preventDefault();
 	$(".Logoutform").submit(); 
 }); 
+
+
+
+
+
+
 
 </script>
 

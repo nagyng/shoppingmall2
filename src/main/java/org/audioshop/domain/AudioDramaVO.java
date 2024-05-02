@@ -17,14 +17,21 @@ public class AudioDramaVO {
 	private String auArt;
 	private String auCompany;
 	private int auPrice; 
-	private String auGenre; 
-	private String auStatus; 
-	private int auQuantity; 
+	private int auGenre; 
+	private int auStatus; 
+	private int auQuantity; 	//재고 수
+	private int auCode1;		//단편, 시리즈물
+	private int auCode2;		//예약판, 일반판 
 
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
 	private Date auRegDate;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
 	private Date auUpdateDate;
 	
+	private int code;			//공용코드테이블
+	private String codename;	//코드 의미
+ 
+
+	private List<AudioDramaAttachVO> attachList;
 	
 }

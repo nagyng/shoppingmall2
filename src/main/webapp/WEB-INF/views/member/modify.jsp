@@ -93,21 +93,21 @@
                                             
                                             <div class="mt-4 mb-0"><div class="d-grid">
                                             <div class="btn-group" role="group" aria-label="Basic mixed styles example"> 
-                                            	<button type="button" class="btn btn-primary btn-block" 
-                                            	onclick="checkValue();">정보2</button> 
-                                                
+                                            	<button type="button" class="btn btn-success btn-block" 
+                                            	onclick="checkValue();">저장</button> 
+                                                <%-- 
                                                 <button type="button" class="btn btn-success btn-block"
                                                 href='<sec:authentication property="principal.username"/>' 
                                                 class="move2">정보수정</button> 
-												
+												 --%>
 												<button data-oper='reset' type="reset" class="btn btn-warning">취소</button> 
-												<button data-oper='remove' class="btn btn-danger">회원탈퇴</button>  
-                                            </div>
+												<button data-oper='remove' class="btn btn-danger">회원탈퇴</button> 
+                                            </div>  
 											</div></div> 
                                             
                             			<input type="hidden" name="mmId" value="<sec:authentication property="principal.member.mmId"/>" >
                             			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                                        </form>
+                                        </form> 
                                     </div> 
                                 </div>
                             </div>
@@ -139,31 +139,7 @@ $(".move2").on("click",function(e){
 });
 </script>  
 <script>
-/* 생일을 달력에서 찍기 */
 $(document).ready(function(){
-		$("#birthday").datepicker({
-			changeMonth:true,
-			changeYear:true,
-			dateFormat:"yy-mm-dd",
-			prevText:"이전 달",
-			nextText:"다음 달",
-			monthNames:['1월','2월','3월','4월',
-						'5월','6월','7월','8월',
-						'9월','10월','11월','12월'
-				       ],
-			monthNamesShort:['1월','2월','3월','4월',
-							'5월','6월','7월','8월',
-							'9월','10월','11월','12월'
-					       ],
-			dayNames:['일','월','화','수','목','금','토'],
-			dayNamesShort:['일','월','화','수','목','금','토'],
-			dayNamesMin:['일','월','화','수','목','금','토'],
-			showMonthAfterYear:true,
-			yearSuffix:'년'
-		});
-		
-		
-		
 /* 유효성 검사 */
 
 		var formObj = $("form[role='form']"); 
@@ -173,12 +149,15 @@ $(document).ready(function(){
 			var operation = $(this).data("oper"); 
 			console.log(operation); 
 			
-			if(operation === 'remove'){		//삭제 버튼 클릭 처리 
+			if(operation === 'remove'){		//삭제 버튼 클릭 처리
+				session.invalidate();
+				alert("회원탈퇴가 완료되었습니다.");
 				formObj.attr("action", "/member/remove"); 
 			}
 			
 			else if (operation === 'modify'){ 
 				console.log("수정 버튼클릭 "); 
+				alert("회원수정이 완료되었습니다.");
 				var str="";   
 				formObj.append(str).submit(); 
 			}  
@@ -199,7 +178,9 @@ $(document).ready(function(){
 
  
 		 
+		
 		checkValue = function(){ 
+			
             var username = $("#username").val(); 
             var ps0 = $("#password").val();
             var ps1 = $("#password").val();
@@ -225,10 +206,38 @@ $(document).ready(function(){
 			} */
 			 
 		}	 		
+
 		
 		
 		
-	});
+		
+		/* 생일을 달력에서 찍기 */
+		$("#birthday").datepicker({
+			changeMonth:true,
+			changeYear:true,
+			dateFormat:"yy-mm-dd",
+			prevText:"이전 달",
+			nextText:"다음 달",
+			monthNames:['1월','2월','3월','4월',
+						'5월','6월','7월','8월',
+						'9월','10월','11월','12월'
+				       ],
+			monthNamesShort:['1월','2월','3월','4월',
+							'5월','6월','7월','8월',
+							'9월','10월','11월','12월'
+					       ],
+			dayNames:['일','월','화','수','목','금','토'],
+			dayNamesShort:['일','월','화','수','목','금','토'],
+			dayNamesMin:['일','월','화','수','목','금','토'],
+			showMonthAfterYear:true,
+			yearSuffix:'년'
+		});
+		
+		
+		
+});
+
+
 </script>
 <!-- 카카오 우편번호 API -->
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

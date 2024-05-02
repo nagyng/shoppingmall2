@@ -52,7 +52,7 @@ text-decoration-line: none;
                         	</tr> 
                         </table>  
                         <form action="/member/modify" method="get" id="actionForm"> 
-                        	<a class="btn btn-outline-warning btn-lg move" 
+                        	<a class="btn btn-primary btn-lg move" 
                         		href='<sec:authentication property="principal.member.username"/>'>정보 수정</a>  
                         </form><%-- 
                         	<a class="btn btn-outline-warning btn-lg" href='/member/modify'>내 정보 수정</a> --%>

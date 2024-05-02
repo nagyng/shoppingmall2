@@ -26,8 +26,7 @@ text-decoration-line: none;
 </head>
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script> 
 <script>
 	$(function(){
 		$("#datepicker").datepicker({
@@ -77,14 +76,19 @@ text-decoration-line: none;
 	                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
 	                        <li class="nav-item dropdown">
 	                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-	                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown"> <!-- 
-	                                <li><a class="dropdown-item" href="#!">모든 상품</a></li>
-	                                <li><hr class="dropdown-divider" /></li> -->
+	                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">  
 	                                <li><a class="dropdown-item" href="#!">예약판</a></li>
 	                                <li><a class="dropdown-item" href="#!">일반판</a></li>
 	                                <li><a class="dropdown-item" href="#!">품절된 상품</a></li>
 	                            </ul> 
 	                        </li>
+	                        
+	                        <sec:authentication property="principal" var="pinfo"/> 
+	                        <sec:authorize access="isAuthenticated()">
+	                        	<c:if test="${pinfo.member.grade >= 9}">
+	                        		<a href="/audio/insert" class="btn btn-info">새상품등록</a>
+	                        	</c:if>
+	                        </sec:authorize> 
 	                    </ul>
 	                 
                     <form action="#">
@@ -137,6 +141,17 @@ text-decoration-line: none;
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">장바구니에 담기</a></div>
                             </div>
+                            
+	                        <sec:authentication property="principal" var="pinfo"/> 
+	                        <sec:authorize access="isAuthenticated()">
+	                        	<c:if test="${pinfo.member.grade >= 9}">
+	                        		<div class="text-center">
+	                        			<a href="/audio/remove?auId=<c:out value='${audiodrama.auId }'/>" 
+	                        				class="btn btn-danger mt-auto">삭제</a> 
+	                        		</div>
+	                        	</c:if>
+	                        </sec:authorize> 
+	                        
                         </div>
                     </div>
                     
@@ -229,8 +244,8 @@ text-decoration-line: none;
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script type="text/javascript">
 
-$(document).ready(function() {
-
+$(document).ready(function() { 
+	
 	
 	
 var actionForm = $("#actionForm");

@@ -86,7 +86,8 @@
 $(document).ready(function() {   
 
 	var formObj = $("form[role='form']"); 
-	$("button[type='submit']").on("click", function(e) { 
+	
+	$("button[type='submit']").on("click", function(e) { 		//submit 버튼 클릭했을 때 
 		e.preventDefault(); 
 		var str=""; 
 		formObj.append(str).submit(); 

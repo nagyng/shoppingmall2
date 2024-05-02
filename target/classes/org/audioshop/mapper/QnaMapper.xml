@@ -74,7 +74,7 @@ values 			(qn_seq.nextval, #{qnTitle}, #{qnContent}, #{username}, sysdate)
 	<![CDATA[	
 	select 		qnId, qnTitle, qnContent, username, qnRegdate, qnUpdateDate, replycnt 
 	from 		(
-				select 	/*+INDEX_DESC(qna pk_board) */
+				select 	/*+INDEX_DESC(qna qna_pk) */
 						rownum rn, qnId, qnTitle, qnContent, username, qnRegdate, qnUpdateDate, replycnt 
 				from	qna
 				where

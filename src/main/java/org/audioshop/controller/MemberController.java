@@ -1,6 +1,9 @@
 package org.audioshop.controller;
   
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.audioshop.domain.AuthVO;
 import org.audioshop.domain.MemberVO;
 import org.audioshop.service.MemberService;
@@ -10,10 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -49,7 +50,19 @@ public class MemberController {
  
 	@GetMapping("/logout") 
 	public void logoutGET() { 
+	}
+	 
+	@PostMapping("/logout") 
+	public String  logoutPOST(HttpServletRequest request) { 
+		//세션을 삭제
+		HttpSession session = request.getSession(false); 
+        // session이 null이 아니라는건 기존에 세션이 존재했었다는 뜻이므로
+        // 세션이 null이 아니라면 session.invalidate()로 세션 삭제해주기.
+		if(session != null) {
+			session.invalidate();
+		}
 		log.info("로그아웃 처리가 완료되었습니다.");
+		return "redirect:/";
 	}
 
 	
@@ -60,7 +73,7 @@ public class MemberController {
 			rttr.addFlashAttribute("result","success");
 			log.info("회원 탈퇴되었습니다.");
 		} 
-		return "redirect:/member/register";
+		return "redirect:/member/logout";
 	}
  
 	

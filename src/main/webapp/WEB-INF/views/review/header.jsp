@@ -10,17 +10,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <title>이벤트 공지</title> 
     <!-- Bootstrap Core CSS -->
-    <link href="/resources/event/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> 
+    <link href="/resources/review/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> 
     <!-- MetisMenu CSS -->
-    <link href="/resources/event/vendor/metisMenu/metisMenu.min.css" rel="stylesheet"> 
+    <link href="/resources/review/vendor/metisMenu/metisMenu.min.css" rel="stylesheet"> 
     <!-- DataTables CSS -->
-    <link href="/resources/event/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet"> 
+    <link href="/resources/review/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet"> 
     <!-- DataTables Responsive CSS -->
-    <link href="/resources/event/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet"> 
+    <link href="/resources/review/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet"> 
     <!-- Custom CSS -->
-    <link href="/resources/event/dist/css/sb-admin-2.css" rel="stylesheet"> 
+    <link href="/resources/review/dist/css/sb-admin-2.css" rel="stylesheet"> 
     <!-- Custom Fonts -->
-    <link href="/resources/event/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/resources/review/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <style type="text/css"> 
 .headerDiv > ul {
 float: right;

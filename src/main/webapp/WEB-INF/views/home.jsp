@@ -200,8 +200,8 @@
                     </c:forEach> 
                 
             	</div>
-            	
-                <!-- Pagination-->
+            </div>
+            <!-- Pagination-->
                 <nav aria-label="Pagination">
                    <hr class="my-0" />
                    <ul class="pagination justify-content-center my-4">
@@ -214,6 +214,12 @@
                       <li class="page-item"><a class="page-link" href="#!">Older</a></li>
                   </ul>
                </nav>
+            
+            
+            <%-- 
+            <%@ include file="/review/list.jsp" %>
+             --%>
+            
         </section>
         <!-- Footer-->
 <%@ include file="./includes/footer.jsp" %> 

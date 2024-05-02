@@ -5,7 +5,7 @@ import java.util.List;
 import org.audioshop.domain.AudioDramaVO;
 import org.audioshop.domain.Criteria;
 
-public interface AudioMapper {  
+public interface AudioDramaMapper {  
 
 		public List<AudioDramaVO> getList();
 		

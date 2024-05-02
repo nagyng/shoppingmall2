@@ -6,28 +6,27 @@
  
 <insert id="insert">
 	insert 
-	into 	reply (qnId, reId, content, username, reRegDate)
-	values 	(#{qnId}, re_seq.nextval, #{content}, #{username}, sysdate)
+	into 		reply (qnId, reId, content, username, reRegDate)
+	values 		(#{qnId}, re_seq.nextval, #{content}, #{username}, sysdate)
 </insert>
  
 <select id="read" resultType="org.audioshop.domain.ReplyVO">
 	select 		* 
 	from 		reply 
-	where 		reId = #{reId}
-	order by 	reId asc
+	where 		reId = #{reId} 
 </select>
  
 <delete id="delete">
 	delete 
-	from 	reply 
-	where 	reId = #{reId}
+	from 		reply 
+	where 		reId = #{reId}
 </delete>
  
 <update id="update">
-	update 	reply 
-	set 	content = #{content}, 
-			reUpdateDate = sysdate 
-	where 	reId = #{reId}
+	update 		reply 
+	set 		content = #{content}, 
+				reUpdateDate = sysdate 
+	where 		reId = #{reId}
 </update>
  
 <!-- 댓글 페이징 처리 -->
@@ -44,16 +43,17 @@ from
 	and		reId > 0
 	and		rownum <= #{cri.pageNum} * #{cri.amount}
 	) 
-where	rn > (#{cri.pageNum} -1) * #{cri.amount}
+where		rn > (#{cri.pageNum} -1) * #{cri.amount}
+order by	reId asc
 ]]> 
 	
 </select>
 
 <!-- 댓글 건수 처리 -->
 <select id="getCountByQnId" resultType="int"> 
-select 	count(reId) 
-from 	reply 
-where 	qnId = #{qnId} 
+select 		count(reId) 
+from 		reply 
+where 		qnId = #{qnId} 
 </select>
 
 

@@ -16,44 +16,63 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">문의사항</h1>
+                    <h1 class="page-header">리뷰 게시판</h1>
                 </div> 
             </div> 
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading"> 
-                            QNA List Page
-                            <button id="regBtn" type="button" class="btn btn-xs btn-success pull-right">QNA 등록</button>
+                            리뷰 게시판
+                            <button id="regBtn" type="button" class="btn btn-xs btn-success pull-right">review 등록</button>
                         </div> 
                         <div class="panel-body">
                             <table width="100%" class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>번호</th>
+                                        <th>No.</th>
+                                        <th>평가</th>
+                                        <th>상품</th>
                                         <th>제목</th>
-                                        <th>내용</th>
+                                        <th>아이디</th>
                                         <th>작성일</th>
-                                        <th>수정일</th>
                                     </tr>
                                 </thead> 
                                 
-                                <c:forEach var="qna" items="${list }" >
+                                <c:forEach var="review" items="${list }" >
                                 <tr> 
-                                	<td><c:out value="${qna.qnId }"/></td>
+                                	<td><c:out value="${review.rvId }"/></td>
+                                	<td><c:out value="${review.star }"/> 
+										<div class="star-rating space-x-4 mx-auto"> 		
+							 			<c:forEach var="i" begin="1" end="1">
+											<c:if test="${review.star >= 5}">★</c:if>
+											<c:if test="${review.star >= 4}">★</c:if>
+											<c:if test="${review.star >= 3}">★</c:if>
+											<c:if test="${review.star >= 2}">★</c:if>
+											<c:if test="${review.star >= 1}">★</c:if>				
+										</c:forEach>		 
+	                                	</div> 
+                                	</td>
                                 	<td> 
-                                		<a class="move" href='<c:out value="${qna.qnId }"/>'>
-                                			<c:out value="${qna.qnTitle }"/> 
+                                		<a class="moveAudio" href='<c:out value="${review.auId }"/>'>
+											<img class="card-img-top mb-5 mb-md-0" width="150" height="150"
+												src="/resources/shop/cdimg/<c:out value="${review.auArt }"/>" /><br> 
+                                			<c:out value="${review.auTitle }"/>
                                 		</a>
                                 	</td>
-                                	<td><c:out value="${qna.username }"/></td>
-                                	<td><fmt:formatDate pattern="yyyy-MM-dd" value="${qna.qnRegdate }"/></td>
-                                	<td><fmt:formatDate pattern="yyyy-MM-dd" value="${qna.qnUpdateDate }"/></td>
+                                	<td>
+                                		<a class="move" href='<c:out value="${review.rvId }"/>'>
+                                			<c:out value="${review.rvTitle }"/> 
+                                		</a>
+                                	</td>
+                                	<td><c:out value="${review.username }"/></td>
+                                	<td><fmt:formatDate pattern="yyyy-MM-dd" value="${review.rvRegDate }"/>
+                                		<p style="color:gray"><fmt:formatDate pattern="yyyy-MM-dd" value="${review.rvUpdateDate }"/></p></td>
                                 </tr>
                                 </c:forEach>
                             </table> 
                             
-                            <form id="searchForm" action="/qna/list" method="get"> 
+                            <form id="searchForm" action="/review/list" method="get"> 
                             	<select name="type">
                             		<option value="" <c:out 	value="${pageMaker.cri.type == null ? 'selected' : '' }"/>>
                             			 -- </option>
@@ -92,7 +111,7 @@
                             	</ul> 
                             </div> 
                              
-                            <form action="/qna/list" method="get" id="actionForm">
+                            <form action="/review/list" method="get" id="actionForm">
                             	<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
                             	<input type="hidden" name="amount" value="${pageMaker.cri.amount }">   
                             	<input type="hidden" name="type" value="${pageMaker.cri.type }">
@@ -139,18 +158,18 @@ $(document).ready(function() {
 			return;
 		} 
 		if(parseInt(result) > 0){ 
-			$(".modal-body").html("문의글 " + parseInt(result) + " 번이 등록되었습니다.");
+			$(".modal-body").html("리뷰글 " + parseInt(result) + " 번이 등록되었습니다.");
 		} 
 		$("#myModal").modal("show");
 	}
 	
-	/* p250		3/20 
+	/*  
 		게시물 등록 버튼 처리 */
 	$("#regBtn").on("click", function(){
-		self.location = "/qna/register";
+		self.location = "/review/register";
 	});
 	
-	/* p312 	3/21  
+	/*
 		하단 페이지 번호를 클릭 시 처리 */
 	var actionForm = $("#actionForm");
 	
@@ -167,19 +186,29 @@ $(document).ready(function() {
 		actionForm.submit();
 		 
 	});
-	 
-	//p315 	3/21 
-	//p315 제목을 클릭한 경우 게시물 상세보기 화면으로 이동
+
+
+	//제목을 클릭한 경우 게시물 상세보기 화면으로 이동
 	$(".move").on("click",function(e){
 		
 		e.preventDefault();
 		
-		actionForm.append("<input type='hidden' name='qnId' value='"+ $(this).attr("href") + "'>");
-		actionForm.attr("action","/qna/get");
+		actionForm.append("<input type='hidden' name='rvId' value='"+ $(this).attr("href") + "'>");
+		actionForm.attr("action","/review/get");
 		actionForm.submit();
 	});
 	
-	//p342 	3/22 
+	$(".moveAudio").on("click",function(e){
+		
+		e.preventDefault();
+		
+		actionForm.append("<input type='hidden' name='auId' value='"+ $(this).attr("href") + "'>");
+		actionForm.attr("action","/audio/get");
+		actionForm.submit();
+	});
+	
+
+
 	//검색 버튼의 이벤트 처리
 	//조회 버튼의 모든 정보를 변수에 대입 
 	var searchForm = $("#searchForm");
