@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class AudioDramaVO { 
 
-	private Long auId;
+	private Long auId; 
 	private String auTitle;
 	private String auContent;
 	private String auWriter;
@@ -30,6 +30,9 @@ public class AudioDramaVO {
 	
 	private int code;			//공용코드테이블
 	private String codename;	//코드 의미
+	 
+	
+	private int auDiscount; 
  
 
 	private List<AudioDramaAttachVO> attachList;

@@ -29,6 +29,8 @@
         <link href="/resources/shopDetail/css/styles.css" rel="stylesheet" /> 
         
         
+        <!-- ajax 선언 -->
+      	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <style type="text/css">
 a {
 text-decoration: none;
@@ -65,8 +67,8 @@ text-decoration-line: none;
 	                        </form>
                         </li>
                         </sec:authorize> 
-                        
-                        <li class="nav-item"><a class="nav-link" href="#!">장바구니</a></li>
+                        <!-- 
+                        <li class="nav-item"><a class="nav-link" href="/cart/cart">장바구니</a></li>  -->
                         <li class="nav-item"><a class="nav-link" href="/member/index">마이페이지</a></li> 
                     </ul> 
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">

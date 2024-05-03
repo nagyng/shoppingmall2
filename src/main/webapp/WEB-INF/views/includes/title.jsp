@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,17 +27,40 @@
                         <li class="nav-item"><a class="nav-link" href="#!">GL</a></li> 
                     </ul>
                     
-                    <form class="d-flex">
-                        <button class="btn btn-outline-dark" type="submit">
+                    <div class="d-flex">
+						<sec:authentication property="principal" var="pinfo2"/> 
+						<sec:authorize access="isAuthenticated()">
+                    	<a class="btn btn-outline-dark movecart"
+                    	 href='/cart/cart2?username=<c:out value="${pinfo2.member.username }"/>'>
                             <i class="bi-cart-fill me-1"></i>
                             카트
                             <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
-                    </form>
+                        </a>  
+                        <!-- 
+						<form action="cart/cart2" method="post" id="cartForm">
+						<button class="btn btn-outline-dark moveCart" type="button">
+							<i class="bi-cart-fill me-1"></i>
+                            카트
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span></button>
+						</form>  -->
+						</sec:authorize>
+						
+                    </div>
                 </div>
             </div>
         </nav>
-        
+<script type="text/javascript">
+
+$(document).ready(function() {
+	var cartForm = $("#cartForm"); 
+	$(".moveCart").on("click",function(e){ 
+		e.preventDefault(); 
+		cartForm.append("<input type='hidden' name='username' value='"+ $(this).attr("href") + "'>");
+		cartForm.attr("action","/cart/cart2");
+		cartForm.submit();
+	});
+});
+</script> 
 
 </body>
 </html>

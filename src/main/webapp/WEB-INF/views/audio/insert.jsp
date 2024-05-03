@@ -228,7 +228,7 @@ $(document).ready(function() {
 
 	var formObj = $("form[role='form']"); 
 	
-	$("button[type='submit']").on("click", function(e) { 
+	$("button[type='button']").on("click", function(e) { 
 		e.prDefault(); 
 		var str=""; 
 		$(".uploadResult ul li").each(function(i, obj){ 
@@ -323,17 +323,21 @@ $(document).ready(function() {
 
 	/*  유효성 검사 */
 		checkValue = function(){ 
+		
 	        var auTitle = $("#auTitle").val();   
 	        var auArt = $("#auArt").val();
 	        var auGenre = $("#auGenre").val();
 	        var auStatus = $("#auStatus").val();   
+	        
 	        var auCode1 = $("input[name=auCode1]").is(":checked");
 	        var auCode2 = $("input[name=auCode2]").is(":checked");  
+	        
 	        var auWriter = $("#auWriter").val(); 
 	        var auCompany = $("#auCompany").val();
 	        var auQuantity = $("#auQuantity").val();
 	        var auPrice = $("#auPrice").val();
 	        var auContent = $("#auContent").val();
+	        
 	        
 	        if(!auTitle){
 				alert("상품 이름을 기입하세요.");

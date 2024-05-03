@@ -25,7 +25,8 @@
         <section class="py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="row gx-4 gx-lg-5 align-items-center">
-                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="/resources/shop/cdimg/<c:out value="${audiodrama.auArt }"/>" alt="..." /></div>
+                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" 
+                    						src="/resources/shop/cdimg/<c:out value="${audiodrama.auArt }"/>" alt="..." /></div>
                     <div class="col-md-6">
                         <div class="small mb-1">AUDIOID-CD<c:out value="${audiodrama.auId }"/></div>
                         <h1 class="display-5 fw-bolder"><c:out value="${audiodrama.auTitle }"/></h1>
@@ -50,18 +51,105 @@
                         		<th><p class="lead">원가</p></th>
                         		<td><p class="lead"><fmt:formatNumber value="${audiodrama.auPrice}" pattern="#,###"/>원</p></td>
                         	</tr>
-                        </table>
+                        </table> 
                         
-                        <div class="d-flex">
-                            <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                            <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                        <div class="d-flex"> 
+                        <!-- 
+                            <input class="form-control text-center me-3" id="auCount" type="text" value="1" style="max-width: 3rem" /> 
+                             -->
+                            					
+							<div class="button_quantity">
+								주문수량
+								<input type="text" class="quantity_input" value="1">
+								<span>
+									<button class="plus_btn">+</button>
+									<button class="minus_btn">-</button>
+								</span>
+							</div>
+						
+                            <input class="form-control" name="username" id="username" type="hidden" 
+                                                        	value="<sec:authentication property="principal.username"/>" />
+                            <button class="btn btn-outline-dark flex-shrink-0 btn_cart" type="button">
                                 <i class="bi-cart-fill me-1"></i>
                                 장바구니에 담기
-                            </button>
-                        </div> 
+                            </button> 
+                        </div>  
+                        
+                        <%-- 
+                        <div class="d-flex"> 
+                        <form action="/cart/add" method="post">
+                            <input class="form-control text-center me-3" id="auCount" type="text" value="1" style="max-width: 3rem" /> 
+                            <input class="form-control" name="username" id="username" type="hidden" placeholder="아이디"
+                                                        	value="<sec:authentication property="principal.username"/>" />
+                            <input class="form-control" name="username" id="username" type="hidden" placeholder="아이디"
+                                                        	value="${audiodrama.auId }" />
+                            <button class="btn btn-outline-dark flex-shrink-0 btn_cart" type="submit">
+                                <i class="bi-cart-fill me-1"></i>
+                                장바구니에 담기
+                            </button> </form>
+                        </div>
+ --%>
+
+
+<script type="text/javascript">
+$(document).ready(function() {   
+	 
+			 
+	// 수량 버튼 조작
+	let quantity = $(".quantity_input").val();
+	
+	$(".plus_btn").on("click", function(){
+		$(".quantity_input").val(++quantity);
+			});
+	$(".minus_btn").on("click", function(){
+		if(quantity > 1){
+				$(".quantity_input").val(--quantity);
+		}
+	});
+
+	//장바구니 담기 
+	var auCountval = quantity;
+	var usernameval = $("#username").val();  
+	
+	const form = {
+		username : usernameval,
+		auId : '${audiodrama.auId}',
+		auCount : auCountval
+	}
+	
+	//장바구니 추가 버튼
+	$(".btn_cart").on("click", function(e){  
+		
+		console.log("form: ", form); 
+		
+ 
+		//장바구니 추가
+		$.ajax({
+			url: '/cart/add',
+			type : "post",
+			data: form,
+			//dataType: 'json',
+			//processData : false,
+			//contentType : false,
+			success: function(result){ 
+				if(result == '0'){
+					alert("장바구니에 추가를 하지 못하였습니다.");
+				} else if(result == '1'){
+					alert("장바구니에 추가되었습니다.");
+				} else if(result == '2'){
+					alert("장바구니에 이미 추가되어져 있습니다.");
+				}   
+			}
+		})	 
+	});
+ 
+	
+	
+});
+</script>
                         
                         <div class="d-flex">
-						<sec:authentication property="principal" var="pinfo"/> 
+                        <sec:authentication property="principal" var="pinfo"/> 
 						<sec:authorize access="isAuthenticated()">
 							<c:if test="${pinfo.member.grade >= 9}">  	
 	                        	<a href="/audio/modify?auId=<c:out value="${audiodrama.auId }"/>" class="btn btn-warning p-5">수정</a>
@@ -87,6 +175,7 @@
             </div>
         </section> 
         
+        
         <!-- Related items section-->
         <section class="py-5 bg-light">
             <div class="container px-4 px-lg-5 mt-5">
@@ -97,8 +186,8 @@
                     <div class="col mb-5">
                         <div class="card h-100">
                         	<a href='/audio/get?auId=<c:out value="${audios.auId }"/>'>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="/resources/shop/cdimg/<c:out value="${audios.auArt }"/>" alt="..." />
+                            <!-- Product image
+                            <img class="card-img-top" src="/resources/shop/cdimg/<c:out value="${audios.auArt }"/>" alt="..." />-->
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
