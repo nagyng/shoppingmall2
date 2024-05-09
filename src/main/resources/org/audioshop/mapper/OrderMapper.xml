@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.audioshop.mapper.OrderMapper">
+
+<!-- 주문 상품 정보 -->
+<select id="getGoodsInfo" resultType="org.audioshop.domain.OrderPageItemDTO">
+	
+	select 		auId, auTitle, auPrice, auDiscount
+	from 		audiodrama 
+	where 		auId = #{auId}	
+	
+</select>
+	
+<select id="getOrderInfo" resultType="org.audioshop.domain.OrderItemDTO">
+	
+	select 		auId, auPrice, auDiscount
+	from 		audiodrama 
+	where 		auId = #{auId}
+	
+</select>	
+	
+<!-- 주문 테이블 등록 -->
+<insert id="enrollOrder">
+	
+insert into 	vam_order(orderId, addressee, username, zipcode, address1, address2, orderState, deliveryCost, usePoint)
+values			(#{orderId},#{addressee}, #{username}, #{zipcode}, #{address1}, #{address2}, '배송준비', #{deliveryCost}, #{usePoint})
+	
+</insert>	
+	
+<!-- 주문 아이템 테이블 등록 -->
+<insert id="enrollOrderItem">
+	
+insert into 	vam_orderItem(orderItemId, orderId, auId, auCount, auPrice, auDiscount, savePoint)
+values			(vam_orderItem_seq.nextval, #{orderId}, #{auId}, #{auCount}, #{auPrice}, #{auDiscount}, #{savePoint})
+	
+</insert>	
+
+<insert id="enrollOrderItemSelectKey">
+	<selectKey keyProperty="orderItemId" order="BEFORE" resultType="Integer">
+	select 			vam_orderItem_seq.nextval 
+	from 			dual
+	</selectKey> 
+insert into 	vam_orderItem(orderItemId, orderId, auId, auCount, auPrice, auDiscount, savePoint)
+values			(#{orderItemId}, #{orderId}, #{auId}, #{auCount}, #{auPrice}, #{auDiscount}, #{savePoint}) 
+</insert>
+	
+ 
+	
+	
+<!-- 주문 금액 차감 -->
+<update id="deductMoney">
+	
+	update 		member 
+	set 		money = #{money}, point = #{point} 
+	where 		username = #{username}
+		
+</update>	
+	
+<!-- 주문 재고 차감 -->
+<update id="deductStock">
+	
+	update 		audiodrama 
+	set 		auQuantity = #{auQuantity} 
+	where 		auId = #{auId}
+	
+</update>	
+	
+<!-- 주문취소 -->
+<update id="orderCancel">
+	
+	update 		vam_order 
+	set 		orderState = '주문취소' 
+	where 		orderId = #{orderId}
+		
+</update>	
+
+<!-- 주문 상품 정보(주문취소) -->
+<select id="getOrderItemInfo" resultType="org.audioshop.domain.OrderItemDTO">
+	
+	select 		* 
+	from 		vam_orderItem
+	where 		orderId = #{orderId}
+
+</select>
+	
+<!-- 주문 정보(주문 취소) -->
+<select id="getOrder" resultType="org.audioshop.domain.OrderDTO">
+	
+	select 		* 
+	from 		vam_order
+	where 		orderId = #{orderId}
+	
+</select>
+
+
+
+</mapper>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.audioshop.mapper.AudioDramaMapper"> 
+ 
+<resultMap id="codesMap" type="org.audioshop.domain.CodesVO">
+	<result property="code" column="code"/> 
+	<result property="codename" column="codename"/> 
+</resultMap>
+
+
+<select id="getList" resultMap="codesMap"> 
+<![CDATA[
+select 			a.auId as auId, 
+                a.auTitle as auTitle,
+                a.auContent as auContent, 
+                a.auPrice as auPrice,
+                a.auCode1 as auCode1,
+                a.auCode2 as auCode2,
+                a.auDiscount as auDiscount,
+                c.code as code,
+                c.codename as codename 
+from 			audiodrama a
+INNER JOIN		codes c
+ON   			a.auId > 0
+where			a.auStatus = c.code 
+order by 		a.auId asc
+]]>
+</select>
+  
+
+<insert id="insert">
+insert into 	audiodrama (auId, auTitle, auContent, auWriter, auCompany, auPrice, auGenre, auRegDate, auStatus, auQuantity, auCode1, auCode2)
+values 			(au_seq.nextval, #{auTitle}, #{auContent}, #{auWriter}, #{auCompany}, #{auPrice}, #{auGenre}, sysdate, #{auStatus}, #{auQuantity}, #{auCode1}, #{auCode2})
+</insert>
+
+<insert id="insertSelectKey">
+<selectKey keyProperty="auId" order="BEFORE" resultType="long"> 
+select 			au_seq.nextval 
+from 			dual
+</selectKey>
+insert into 	audiodrama (auId, auTitle, auContent, auWriter, auCompany, auPrice, auGenre, auRegDate, auStatus, auQuantity, auCode1, auCode2)
+values 			(#{auId}, #{auTitle}, #{auContent}, #{auWriter}, #{auCompany}, #{auPrice}, #{auGenre}, sysdate, #{auStatus}, #{auQuantity}, #{auCode1}, #{auCode2})
+</insert>
+
+<select id="read" resultType="org.audioshop.domain.AudioDramaVO">
+select 			* 
+from 			audiodrama
+where 			auId = #{auId}
+</select>
+
+<delete id="delete">
+delete 	
+from 			audiodrama
+where 			auId = #{auId}
+</delete>
+
+<update id="update">
+update 			audiodrama
+set 			auTitle = #{auTitle},
+				auContent = #{auContent},
+				auWriter = #{auWriter}, 
+				auCompany = #{auCompany},
+				auPrice = #{auPrice},
+				auGenre = #{auGenre}, 
+				auUpdateDate = sysdate,
+				auStatus = #{auStatus},
+				auQuantity = #{auQuantity},
+				auCode1 = #{auCode1},
+				auCode2 = #{auCode2}
+where 			auId = #{auId}
+</update>
+
+<sql id="criteria">
+	<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+		<foreach item='type' collection="typeArr">
+			<trim prefix="OR">
+				<choose>
+					<when test="type == 'T'.toString()">
+						auTitle like '%'||#{keyword}||'%'
+					</when>
+					<when test="type == 'C'.toString()">
+						auContent like '%'||#{keyword}||'%'
+					</when>
+					<when test="type == 'W'.toString()">
+						auWriter like '%'||#{keyword}||'%'
+					</when>
+				</choose>
+			</trim>
+		</foreach>
+	</trim> 
+</sql>
+
+ 
+<select id="getListWithPaging" resultType="org.audioshop.domain.AudioDramaVO">
+	<![CDATA[	
+	select 	auId, auTitle, auContent, auWriter, auArt, auCompany, auPrice, auGenre, auRegDate, auUpdateDate, auStatus, auQuantity, auCode1, auCode2
+	from 	(
+			select /*+INDEX_DESC(event event_pk) */
+					rownum rn, 
+					auId, 
+					auTitle, 
+					auContent, 
+					auWriter, 
+					auArt, 
+					auCompany, 
+					auPrice, 
+					auGenre, 
+					auRegDate, 
+					auUpdateDate, 
+					auStatus, 
+					auQuantity, 
+					auCode1, 
+					auCode2
+			from	audiodrama
+			where
+	]]>
+	
+	<include refid="criteria"></include>
+	
+	<![CDATA[	
+					rownum <= #{pageNum} * #{amount}
+			)
+	where 	rn > (#{pageNum} -1 ) * #{amount}
+	]]>
+</select> 
+
+<select id="getTotalCount" resultType="int">
+select 			count(*) 
+from 			audiodrama 
+where			
+<include refid="criteria"></include>
+ 				auId > 0
+</select>
+
+
+
+
+
+<!-- 상품 정보 -->
+<select id="getGoodsInfo" resultType="org.audioshop.domain.AudioDramaVO">
+select 			a.auId 			as auId, 
+                a.auTitle 		as auTitle,
+                a.auContent 	as auContent, 
+                a.auPrice 		as auPrice,
+                a.auQuantity 	as auQuantity,
+                a.auCode1 		as auCode1,
+                a.auCode2 		as auCode2,
+                a.auDiscount 	as auDiscount,
+                c.code 			as code,
+                c.codename 		as codename 
+from 			audiodrama a
+INNER JOIN		codes c
+ON   			a.auId > 0
+where			a.auStatus = c.code 
+and 			a.auId = ${auId}
+order by 		a.auId asc
+</select>	
+	
+	<!-- 
+<select id="getBookIdName" resultType="org.audioshop.domain.AudioDramaVO">
+select 			auId, auTitle 
+from 			audiodrama 
+where 			auId = #{auId}
+</select>	
+	   -->
+	
+		
+	
+	
+  
+  
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.audioshop.mapper.EventMapper"> 
+<select id="getList" resultType="org.audioshop.domain.EventVO"> 
+<![CDATA[
+select 			* 
+from 			event 
+where 			evId > 0 
+order by 		evId desc
+]]>
+</select>
+  
+
+<insert id="insert">
+insert into 	event (evId, evTitle, evContent, username, evViews, evRegDate, evUpdateDate)
+values 			(ev_seq.nextval, #{evTitle}, #{evContent}, #{username}, 0, sysdate, null)
+</insert>
+
+<insert id="insertSelectKey">
+<selectKey keyProperty="evId" order="BEFORE" resultType="long">
+select 			ev_seq.nextval 
+from 			dual
+</selectKey>
+insert into 	event(evId, evTitle, evContent, username, evRegDate)
+values 			(#{evId}, #{evTitle}, #{evContent}, #{username}, sysdate)
+</insert>
+
+<select id="read" resultType="org.audioshop.domain.EventVO">
+select 			* 
+from 			event
+where 			evId = #{evId}
+</select>
+
+<delete id="delete">
+delete 	
+from 			event
+where 			evId = #{evId}
+</delete>
+
+<update id="update">
+update 			event
+set 			evTitle = #{evTitle},
+				evContent = #{evContent},
+				username = #{username},
+				evUpdateDate = sysdate
+where 			evId = #{evId}
+</update>
+
+<sql id="criteria">
+	<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+		<foreach item='type' collection="typeArr">
+			<trim prefix="OR">
+				<choose>
+					<when test="type == 'T'.toString()">
+						title like '%'||#{keyword}||'%'
+					</when>
+					<when test="type == 'C'.toString()">
+						content like '%'||#{keyword}||'%'
+					</when>
+					<when test="type == 'W'.toString()">
+						writer like '%'||#{keyword}||'%'
+					</when>
+				</choose>
+			</trim>
+		</foreach>
+	</trim> 
+</sql>
+
+ 
+<select id="getListWithPaging" resultType="org.audioshop.domain.EventVO">
+	<![CDATA[	
+	select 	evId, evTitle, evContent, username, evViews, evRegDate, evUpdateDate
+	from 	(
+			select /*+INDEX_DESC(event event_pk) */
+					rownum rn, evId, evTitle, evContent, username, evViews, evRegDate, evUpdateDate
+			from	event
+			where
+	]]>
+	
+	<include refid="criteria"></include>
+	
+	<![CDATA[	
+					rownum <= #{pageNum} * #{amount}
+			)
+	where 	rn > (#{pageNum} -1 ) * #{amount}
+	]]>
+</select> 
+
+<select id="getTotalCount" resultType="int">
+select 			count(*) 
+from 			event 
+where			
+<include refid="criteria"></include>
+ 				evId > 0
+</select>
+
+
+
+  
+  
+</mapper>

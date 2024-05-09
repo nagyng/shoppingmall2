@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="org.audioshop.mapper.CartMapper">
+
+
+<resultMap id="CartMap" type="org.audioshop.domain.CartDTO">
+	<result property="caId" column="caId"/>
+	<result property="auId" column="auId"/> 
+	<result property="auTitle" column="auTitle"/>  
+	<result property="auPrice" column="auPrice"/>  
+	<result property="auCount" column="auCount"/>  
+	<result property="auDiscount" column="auDiscount"/>  
+	<result property="username" column="username"/>
+</resultMap> 
+
+
+
+	<!-- 카트 추가 -->
+	<insert id="addCart"> 
+		insert into 	cart(caId, username, auId, auCount)
+		values			(ca_seq.nextval, #{username}, #{auId}, #{auCount}) 
+	
+	</insert>
+	<insert id="addCartSelectKey">
+	<selectKey keyProperty="caId" order="BEFORE" resultType="long">
+	select 			ca_seq.nextval 
+	from 			dual
+	</selectKey>
+	insert into 	cart(caId, username, auId, auCount)
+	values 			(#{caId}, #{username}, #{auId}, #{auCount})
+	</insert>
+	
+
+	
+	<!-- 카트 삭제 -->
+	<delete id="deleteCart"> 
+		delete from 	cart 
+		where 			caId = #{caId}
+	
+	</delete>
+	
+	<!-- 카트 수량 수정 -->
+	<update id="modifyCount">
+	
+		update 		cart 
+		set 		auCount = #{auCount} 
+		where 		caId = #{caId}
+	
+	</update>
+	
+	
+	<!-- 카트 목록 -->
+	<select id="getCart"  resultMap="CartMap">
+	
+		select 		c.caId as caId, 
+					c.username as username, 
+					c.auId as auId, 
+					c.auCount as auCount, 
+					au.auTitle as auTitle, 
+					au.auPrice as auPrice, 
+					au.auDiscount as auDiscount
+		from 		cart c 
+left outer join 	audiodrama au
+		on 			c.auId = au.auId
+		where 		username = #{username}	
+		order by	c.caId
+	
+	</select>
+	
+	<!-- 카트 확인 -->
+	<select id="checkCart" resultType="org.audioshop.domain.CartDTO">
+	
+		select 		* 
+		from 		cart 
+		where 		username = #{username} 
+		and 		auId = #{auId}
+	
+	</select>	
+	
+	<delete id="deleteOrderCart">
+	
+		delete 
+		from 		cart 
+		where 		username = #{username} 
+		and 		auId = #{auId}
+	
+	</delete>	
+	
+	
+  </mapper>

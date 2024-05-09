@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.audioshop.mapper.MemberMapper">
+
+
+
+<resultMap id="memberMap" type="org.audioshop.domain.MemberVO"> 
+	<id property="username" column="username"/>
+	<result property="mmId" column="mmId"/>
+	<result property="username" column="username"/>
+	<result property="password" column="password"/>
+	<result property="name" column="name"/>
+	<result property="age" column="age"/>
+	<result property="gender" column="gender"/>
+	<result property="email" column="email"/>
+	<result property="point" column="point"/>
+	<result property="grade" column="grade"/>
+	<result property="zipcode" column="zipcode"/>
+	<result property="address1" column="address1"/>
+	<result property="address2" column="address2"/>
+	<result property="regDate" column="regdate"/>
+	<result property="updateDate" column="updatedate"/>
+	<collection property="authList" resultMap="authMap"/>
+</resultMap>
+
+<resultMap id="authMap" type="org.audioshop.domain.AuthVO">
+	<result property="username" column="username"/> 
+	<result property="auth" column="auth"/> 
+</resultMap>
+
+<select id="read" resultMap="memberMap">
+SELECT				mm.mmId, mm.username, mm.password, mm.name, mm.age, mm.gender, mm.email, mm.point, mm.grade, mm.zipcode, mm.address1, mm.address2, mm.regdate, mm.updatedate, auth.auth 
+FROM				member mm
+LEFT OUTER JOIN		member_auth auth on mm.username = auth.username
+WHERE				mm.username = #{username}
+</select> 
+
+<insert id="register">
+insert into 		member (mmId, username, password, name, email, regdate, updatedate)
+values 				(mm_seq.nextval, #{username}, #{password}, #{name}, #{email}, sysdate, null)
+</insert> 
+
+<insert id="insertSelectKey"> 
+	<selectKey keyProperty="mmId" order="BEFORE" resultType="long">
+	select 			mm_seq.nextval 
+	from 			dual
+	</selectKey>
+		 
+	insert 			all
+	into		 	member (mmId, username, password, name, email, regdate, updatedate)
+	values 			(#{mmId}, #{username}, #{password}, #{name}, #{email}, sysdate, null)
+	into			member_auth (username)
+	values			(#{username})
+	select			*
+	from			dual
+</insert>
+ 
+<update id="modify">
+update 			member
+set				username = #{username}, 
+				password = #{password}, 
+				name = #{name},
+				age = #{age},
+				email = #{email},
+				updatedate = sysdate
+where			username = #{username}
+</update>
+ 
+ 
+ 
+<delete id="delete">
+delete 	
+from 			member 
+where 			mmId = #{mmId}
+</delete>
+
+
+
+
+ 
+
+</mapper>

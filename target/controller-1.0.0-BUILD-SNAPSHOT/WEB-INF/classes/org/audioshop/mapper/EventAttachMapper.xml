@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.audioshop.mapper.EventAttachMapper">
+
+ 
+<insert id="insert">
+insert into		event_attach (uuid, uploadpath, filename, filetype, evId)
+values			(#{uuid}, #{uploadPath}, #{fileName}, #{fileType}, #{evId} )
+</insert>
+
+<delete id="delete">
+delete from		event_attach
+where			uuid = #{uuid}
+</delete>
+
+<select id="findByEvId" resultType="org.audioshop.domain.EventAttachVO">
+select			*
+from			event_attach
+where			evId = #{evId}
+</select>
+
+<!-- p579		3/29 -->
+<delete id="deleteAll">
+delete 			event_attach 
+where 			evId = #{evId}
+</delete>
+
+
+<!-- p600		3/29 -->
+<select id="getOldFiles" resultType="org.audioshop.domain.EventAttachVO">
+select 			*
+from			event_attach
+where			uploadpath = to_char(sysdate -1, 'yyyy\mm\dd')
+</select>
+ 
+
+
+
+
+
+
+
+
+
+</mapper>

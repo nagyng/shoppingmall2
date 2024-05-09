@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.audioshop.mapper.ReviewMapper"> 
+
+
+<resultMap id="ReviewMap" type="org.audioshop.domain.ReviewVO">
+	<result property="rvId" column="rvId"/>
+	<result property="auId" column="auId"/> 
+	<result property="username" column="username"/> 
+	<result property="rvTitle" column="rvTitle"/> 
+	<result property="rvContent" column="rvContent"/> 
+	<result property="rvRegDate" column="rvRegDate"/> 
+	<result property="rvUpdateDate" column="rvUpdateDate"/> 
+	<result property="star" column="star"/>  
+	<result property="auArt" column="auArt"/> 
+	<result property="auTitle" column="auTitle"/>  
+</resultMap>
+
+<resultMap id="AudioDramaMap" type="org.audioshop.domain.AudioDramaVO">
+	<result property="auId" column="auId"/>
+	<result property="auTitle" column="auTitle"/> 
+	<result property="auContent" column="auContent"/> 
+	<result property="auWriter" column="auWriter"/> 
+	<result property="auArt" column="auArt"/> 
+	<result property="auCompany" column="auCompany"/> 
+	<result property="auPrice" column="auPrice"/> 
+	<result property="auGenre" column="auGenre"/> 
+	<result property="auRegDate" column="auRegDate"/> 
+	<result property="auUpdateDate" column="auUpdateDate"/> 
+	<result property="auStatus" column="auStatus"/> 
+	<result property="auQuantity" column="auQuantity"/>  
+</resultMap>
+ 
+
+
+
+
+<select id="getListAudio" resultMap="ReviewMap"> 
+SELECT				rv.rvId as rvId, 
+					rv.auId as auId, 
+					rv.username as username, 
+					rv.rvTitle as rvTitle, 
+					rv.rvContent as rvContent, 
+					rv.rvRegDate as rvRegDate, 
+					rv.rvUpdateDate as rvUpdateDate, 
+					rv.star as star, 
+					au.auTitle as auTitle, 
+					au.auArt as auArt
+FROM				review rv
+LEFT OUTER JOIN		audiodrama au 
+ON 					rv.auId = au.auId 
+order by 			rv.rvId desc
+</select> 
+
+<select id="getListAudioOnly" resultMap="ReviewMap"> 
+SELECT				rv.rvId as rvId, 
+					rv.auId as auId, 
+					rv.username as username, 
+					rv.rvTitle as rvTitle, 
+					rv.rvContent as rvContent, 
+					rv.rvRegDate as rvRegDate, 
+					rv.rvUpdateDate as rvUpdateDate, 
+					rv.star as star, 
+					au.auTitle as auTitle, 
+					au.auArt as auArt
+FROM				review rv
+LEFT OUTER JOIN		audiodrama au 
+ON 					rv.auId = au.auId 
+where 				au.auId = #{auId}
+order by 			rv.rvId desc
+</select> 
+
+
+
+
+<select id="getList" resultType="org.audioshop.domain.ReviewVO"> 
+<![CDATA[
+select 			* 
+from 			review 
+where 			rvId > 0 
+order by 		rvId desc
+]]>
+</select>
+  
+
+<insert id="insert">
+insert into 	review (rvId, auId, username, rvTitle, rvContent, rvRegDate, rvUpdateDate, star)
+values 			(rv_seq.nextval, #{auId}, #{username}, #{rvTitle}, #{rvContent}, sysdate, null, #{star} )
+</insert>
+
+<insert id="insertSelectKey">
+<selectKey keyProperty="rvId" order="BEFORE" resultType="long">
+select 			rv_seq.nextval 
+from 			dual
+</selectKey>
+insert into 	review (rvId, auId, username, rvTitle, rvContent, rvRegDate, rvUpdateDate, star)
+values 			(#{rvId}, #{auId}, #{username}, #{rvTitle}, #{rvContent}, sysdate, null, #{star})
+</insert>
+
+<select id="read" resultType="org.audioshop.domain.ReviewVO">
+select 			* 
+from 			review
+where 			rvId = #{rvId}
+</select>
+
+ 
+<select id="readOnly" resultMap="ReviewMap"> 
+SELECT				rv.rvId as rvId, 
+					rv.auId as auId, 
+					rv.username as username, 
+					rv.rvTitle as rvTitle, 
+					rv.rvContent as rvContent, 
+					rv.rvRegDate as rvRegDate, 
+					rv.rvUpdateDate as rvUpdateDate, 
+					rv.star as star, 
+					au.auTitle as auTitle, 
+					au.auArt as auArt
+FROM				review rv
+LEFT OUTER JOIN		audiodrama au 
+ON 					rv.auId = au.auId 
+where 				rv.rvId = #{rvId}
+order by 			rv.rvId desc
+</select> 
+
+
+
+
+
+<delete id="delete">
+delete 	
+from 			review
+where 			rvId = #{rvId}
+</delete>
+
+<update id="update">
+update 			review
+set 			rvTitle = #{rvTitle},
+				rvContent = #{rvContent}, 
+				rvUpdateDate = sysdate, 
+				star = #{star}
+where 			rvId = #{rvId}
+</update>
+
+<sql id="criteria">
+	<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+		<foreach item='type' collection="typeArr">
+			<trim prefix="OR">
+				<choose>
+					<when test="type == 'T'.toString()">
+						title like '%'||#{keyword}||'%'
+					</when>
+					<when test="type == 'C'.toString()">
+						content like '%'||#{keyword}||'%'
+					</when>
+					<when test="type == 'W'.toString()">
+						writer like '%'||#{keyword}||'%'
+					</when>
+				</choose>
+			</trim>
+		</foreach>
+	</trim> 
+</sql>
+
+ 
+<select id="getListWithPaging" resultType="org.audioshop.domain.ReviewVO">
+	<![CDATA[	
+	select 	rvId, auId, username, rvTitle, rvContent, rvRegDate, rvUpdateDate, star
+	from 	(
+			select /*+INDEX_DESC(review review_pk) */
+					rownum rn, rvId, auId, username, rvTitle, rvContent, rvRegDate, rvUpdateDate, star
+			from	review
+			where
+	]]>
+	
+	<include refid="criteria"></include>
+	
+	<![CDATA[	
+					rownum <= #{pageNum} * #{amount}
+			)
+	where 	rn > (#{pageNum} -1 ) * #{amount}
+	]]>
+</select> 
+
+<select id="getTotalCount" resultType="int">
+select 			count(*) 
+from 			review 
+where			
+<include refid="criteria"></include>
+ 				rvId > 0
+</select>
+
+
+
+  
+  
+</mapper>

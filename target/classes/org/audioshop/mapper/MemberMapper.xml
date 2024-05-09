@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.audioshop.mapper.MemberMapper">
+
+
+
+<resultMap id="memberMap" type="org.audioshop.domain.MemberVO"> 
+	<id property="username" column="username"/>
+	<result property="mmId" column="mmId"/>
+	<result property="username" column="username"/>
+	<result property="password" column="password"/>
+	<result property="name" column="name"/>
+	<result property="age" column="age"/>
+	<result property="gender" column="gender"/>
+	<result property="email" column="email"/>
+	<result property="point" column="point"/>
+	<result property="grade" column="grade"/>
+	<result property="zipcode" column="zipcode"/>
+	<result property="address1" column="address1"/>
+	<result property="address2" column="address2"/>
+	<result property="regDate" column="regdate"/>
+	<result property="updateDate" column="updatedate"/>
+	<result property="money" column="money"/>
+	<collection property="authList" resultMap="authMap"/>
+</resultMap>
+
+<resultMap id="authMap" type="org.audioshop.domain.AuthVO">
+	<result property="username" column="username"/> 
+	<result property="auth" column="auth"/> 
+</resultMap>
+
+<select id="read" resultMap="memberMap">
+SELECT				mm.mmId as mmId, 
+					mm.username as username, 
+					mm.password as password, 
+					mm.name as name, 
+					mm.age as age, 
+					mm.gender as gender, 
+					mm.email as email, 
+					mm.point as point,  
+					mm.grade as grade, 
+					LPAD( mm.zipcode, 5, '0') as zipcode, 
+					mm.address1 as address1, 
+					mm.address2 as address2, 
+					mm.regdate as regdate, 
+					mm.updatedate as updatedate, 
+					mm.money as money,  
+					auth.auth as auth
+FROM				member mm
+LEFT OUTER JOIN		member_auth auth on mm.username = auth.username
+WHERE				mm.username = #{username}
+</select> 
+
+<insert id="register">
+insert into 		member (mmId, username, password, name, email, regdate, updatedate)
+values 				(mm_seq.nextval, #{username}, #{password}, #{name}, #{email}, sysdate, null)
+</insert> 
+
+<insert id="insertSelectKey"> 
+	<selectKey keyProperty="mmId" order="BEFORE" resultType="long">
+	select 			mm_seq.nextval 
+	from 			dual
+	</selectKey>
+		 
+	insert 			all
+	into		 	member (mmId, username, password, name, email, regdate, updatedate)
+	values 			(#{mmId}, #{username}, #{password}, #{name}, #{email}, sysdate, null)
+	into			member_auth (username)
+	values			(#{username})
+	select			*
+	from			dual
+</insert>
+ 
+<update id="modify">
+update 			member
+set				username = #{username}, 
+				password = #{password}, 
+				name = #{name},
+				age = #{age},
+				gender = #{gender},
+				email = #{email},
+				point = #{point},
+				email = #{email},
+				grade = #{grade},
+				zipcode = #{zipcode},
+				address1 = #{address1},
+				address2 = #{address2},
+				updatedate = sysdate,
+				money = #{money}
+where			username = #{username}
+</update>
+ 
+ 
+ 
+<delete id="delete">
+delete 	
+from 			member 
+where 			mmId = #{mmId}
+</delete>
+
+
+
+
+
+
+<sql id="criteria">
+	<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+		<foreach item='type' collection="typeArr">
+			<trim prefix="OR">
+				<choose>
+					<when test="type == 'T'.toString()">
+						username like '%'||#{keyword}||'%'
+					</when>
+					<when test="type == 'C'.toString()">
+						name like '%'||#{keyword}||'%'
+					</when>
+					<when test="type == 'W'.toString()">
+						auth like '%'||#{keyword}||'%'
+					</when>
+				</choose>
+			</trim>
+		</foreach>
+	</trim> 
+</sql>
+
+
+<!-- 주문자 정보 -->
+<select id="getMemberInfo" resultType="org.audioshop.domain.MemberVO">
+  	
+  	SELECT 		username, name, email, LPAD(zipcode, 5, '0') as zipcode, address1, address2, money, point 
+  	FROM 		member 
+  	WHERE 		username = #{username}
+  	
+</select>
+
+
+<select id="getList" resultType="org.audioshop.domain.MemberVO">
+<![CDATA[
+select 		*
+from 		(
+  			select 				/*+INDEX_DESC(member member_pk) */ 
+			  					rownum as rn, 
+			  					mm.mmId as mmId, 
+								mm.username as username, 
+								mm.password as password, 
+								mm.name as name, 
+								mm.age as age, 
+								mm.gender as gender, 
+								mm.email as email, 
+								mm.point as point,  
+								mm.grade as grade, 
+								LPAD( mm.zipcode, 5, '0') as zipcode, 
+								mm.address1 as address1, 
+								mm.address2 as address2, 
+								mm.regdate as regdate, 
+								mm.updatedate as updatedate, 
+								mm.money as money,  
+								auth.auth as auth
+			FROM				member mm
+			LEFT OUTER JOIN		member_auth auth 
+			on 					mm.mmId > 0
+			where				mm.username = auth.username 
+			and
+]]>		 
+
+
+<!-- 
+				<if test="keyword != null">
+								mm.username like '%'||#{keyword}||'%' 
+			and
+				</if> 
+
+	<include refid="criteria"></include>
+	 
+	<![CDATA[	
+					rownum <= #{pageNum} * #{amount}
+			)
+	where			rn > (#{pageNum} -1 ) * #{amount}
+	]]> -->
+				mm.mmId > 0)
+</select>
+  	
+<!-- 회원 수 -->
+<select id="getTotal" resultType="int"> 
+  	select 			count(*) 
+  	from 			member
+  		<if test="keyword != null">
+  		where 		username like '%' || #{keyword} || '%'
+  		</if>
+</select> 
+ 
+
+</mapper>
