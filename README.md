@@ -1,6 +1,6 @@
 # shoppingmall2
-스프링 프레임워크, JAVA, JSP, Servlet 기술을 활용한 
-오디오 드라마CD 전문 판매 쇼핑몰 사이트 개발 프로젝트입니다.
+Spring Framework MVC, JAVA, JSP, Servlet 기술을 기반으로 하는 <br>
+오디오 드라마CD 전문 판매 쇼핑몰 사이트 개발 중입니다.
 
 # 스토리보드  
 ![양나경_Spring_쇼핑몰_스토리보드 pptx (1)](https://github.com/nagyng/shoppingmall2/assets/159399610/2ad0bf5c-d423-4cd8-9edf-9d14a2dd167b)
