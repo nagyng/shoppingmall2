@@ -1,5 +1,5 @@
-# shoppingmall2
-Spring Framework MVC, JAVA, JSP, Servlet 기술을 기반으로 하는 <br>
+# Spring shoppingmall 
+Spring Framework, JAVA 를 기반으로 하는 <br>
 오디오 드라마CD 전문 판매 쇼핑몰 사이트 개발 중입니다.
 
 # 스토리보드  
