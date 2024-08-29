@@ -1,6 +1,6 @@
 # Spring Project 
 Spring Framework, JAVA 를 기반으로 하는 <br>
-오디오 드라마CD 전문 판매 쇼핑몰 사이트를 개발 중입니다. 
+오디오 드라마CD 전문 판매 쇼핑몰 사이트를 개발 중입니다. <br>
 [스토리보드.pptx.pdf](https://github.com/user-attachments/files/16082594/_.pptx.pdf)
 
 # 스토리보드  
